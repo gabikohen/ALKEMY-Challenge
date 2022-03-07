@@ -12,11 +12,22 @@ module.exports = (sequelize, DataTypes) => {
       type: DataTypes.STRING(250),
       unique:true,
       allowNull: false,
+      validate:{
+        isEmail:{
+           msg:'Invalid email address. Please try again.'
+        }
+      }
     },
 
     password: {
       type: DataTypes.STRING(255),
       allowNull: false,
+      validate:{
+        len:{
+            arg:[6,255],
+            msg:'the password must have at least 6 characters'
+        }
+      }
     },
     created_at: {
       type: DataTypes.DATE,

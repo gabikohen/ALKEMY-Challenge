@@ -1,11 +1,12 @@
-
-const db= require("../database/models");
-const { validationResult } = require('express-validator')
+const db = require("../database/models");
+const { validationResult } = require("express-validator");
 
 const moviesControllers = {
   allMovies: (req, res) => {
     db.Movie.findAll({
-      attributes: ["image", "title", "create_date"],
+      where: {
+        attributes: ["image", "title", "create_date"],
+      },
     })
       .then((todas) => {
         return res.status(200).json({
@@ -39,9 +40,6 @@ const moviesControllers = {
       .catch((error) => console.error(error));
   },
 
- 
-
-
   updateMovies: (req, res) => {
     const resultValidation = validationResult(req);
     db.Movie.findByPk(req.params.id).then((edit) => {
@@ -71,8 +69,6 @@ const moviesControllers = {
         .catch((error) => res.send(error));
     });
   },
-
-
 
   deleteMovies: (req, res) => {
     db.Movie.destroy({
