@@ -1,4 +1,4 @@
-
+require('dotenv').config()
 module.exports = 
 {
   "development": {
@@ -8,12 +8,6 @@ module.exports =
     "host": process.env.DB_HOST,
     "dialect": "mysql"
   },
-  // Configurar Seeds
+  
 
-  seederStorage:"sequelize",
-  seederStorageTableName:"seeds",
-
-  // Configurar de Migration
-  migrationStorage:"sequelize",
-  migrationStorageTableName:"migrations"
 }
