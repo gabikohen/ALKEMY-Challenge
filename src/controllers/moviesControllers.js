@@ -3,15 +3,18 @@ const { validationResult } = require("express-validator");
 
 const moviesControllers = {
   allMovies: (req, res) => {
+
     db.Movie.findAll({
-      where: {
-        attributes: ["image", "title", "create_date"],
+
+      include:{
+        model:db.Character,
+        attributes:["image","title"]
       },
+        attributes: ["image", "title", "create_date","age","weigh","history"],
+    
     })
       .then((todas) => {
-        return res.status(200).json({
-          data: todas,
-        });
+        return res.status(200).json(todas);
       })
       .catch((error) => console.error(error));
   },
@@ -33,9 +36,7 @@ const moviesControllers = {
   createMovies: (req, res) => {
     db.Movie.create(req.body)
       .then((creacion) => {
-        return res.status(200).json({
-          data: creacion,
-        });
+        return res.status(200).json(creacion);
       })
       .catch((error) => console.error(error));
   },
@@ -51,11 +52,11 @@ const moviesControllers = {
       }
       db.Movie.update(
         {
-          id: req.body.movies_id,
-          title: req.body.title,
-          qualification: req.body.qualification,
-          create_date: req.body.create_date,
-          image: req.body.image,
+          id: req.body.movies_id ||edit.movies_id,
+          title: req.body.title ||edit.title,
+          qualification: req.body.qualification ||edit.qualification,
+          create_date: req.body.create_date ||edit.create_date,
+          image: req.body.image ||edit.image ,
         },
         {
           where: {

@@ -3,7 +3,7 @@ module.exports = (sequelize, DataTypes) => {
 
   let cols = {
     characters_id: {
-      type: DataTypes.INTEGER(11),
+      type: DataTypes.INTEGER,
       autoIncrement: true,
       primaryKey: true,
       allowNull:false,
@@ -31,7 +31,7 @@ module.exports = (sequelize, DataTypes) => {
 
     image: {
       type: DataTypes.STRING(250),
-      allowNull: false,
+      allowNull: true,
     },
     
     created_at: {

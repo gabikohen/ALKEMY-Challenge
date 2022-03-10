@@ -5,6 +5,10 @@ const router = express.Router();
 
  const MoviesControllers = require("../controllers/moviesControllers"); 
 
+ // Middleware
+
+ const photoMulter = require('../middlewares/multer');
+
 /*  Movies list   */
 router.get('/movies',MoviesControllers.allMovies);
 
@@ -14,9 +18,7 @@ router.get('/movies/:id',MoviesControllers.detailmovies);
 /* Movies Create */
 router.post("/movies",MoviesControllers.createMovies);
 
-/*  Movies Search*/
-/* 
-router.get('/search',MoviesControllers.searchMovies); */
+
 
 /* Movies Edit  */
 router.put('/movies/:id',MoviesControllers.updateMovies);

@@ -17,15 +17,15 @@ module.exports = (sequelize, DataTypes) => {
 
     image: {
       type: DataTypes.STRING(250),
-      allowNull: false,
+      allowNull: true,
     },
 
     qualification: {
       type: DataTypes.INTEGER(11),
       allowNull: false,
     },
-    create_date: {
-      type: DataTypes.DATE,
+    created: {
+      type: DataTypes.INTEGER(20),
       allowNull: false,
     },
 

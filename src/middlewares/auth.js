@@ -1,10 +1,25 @@
-module.exports = (req, res, next) => {
-  console.log(req.headers);
-  if (!req.headers.authorization) {
-    req.status(401).json({ msg: "Acceso no authorizado" });
-    next();  
-}else{
-    // Comprar la validez del token
-}
+const jwt = require("jsonwebtoken");
+const authConfig = require('../database/config/auth');
 
-};
+module.exports =(req,res,next) =>{
+
+console.log(req.headers)
+// Comprobar que existe el  token
+
+if(!req.headers.authorization){
+    res.status(401).json({msg: "Acceso no autorizado"})
+}else{
+    //Comprobar validez del token
+    let token = req.headers.authorization.split(" ")[1]
+
+    jwt.verify(token,authConfig.secret,(err,decoded)=>{
+        if(err){
+            res.status(500).json({msg: "Ha ocurrido un error con el token",err})
+        }else{
+            req.user = decoded
+            next()
+        }
+    })
+}
+    
+}

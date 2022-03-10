@@ -4,85 +4,85 @@ const { Movie } = require("../models");
 const { Character } = require("../models");
 const { Genre } = require("../models");
 const bcryptjs = require("bcryptjs");
-const authConfig = require("../../database/config/auth");
+const authConfig = require('../config/auth')
 
 module.exports = {
-  async up(queryInterface, Sequelize) {
-    return promise.all([
+ async up(queryInterface, Sequelize) {
+    return Promise.all([
       // USUARIOS
       User.create({
         email: "gabokohen@gmail.com",
-        password: bcryptjs.hashSync("1234567", +authConfig.rounds),
+        password: bcryptjs.hashSync("1234567", +authConfig.rounds)
       }),
       User.create({
         email: "fleric@gmail.com",
-        password: bcryptjs.hashSync("1234567", +authConfig.rounds),
+        password: bcryptjs.hashSync("1234567", +authConfig.rounds)
       }),
 
       // MOVIES
 
       Movie.create({
         title: "The Jungle Book",
-        image: "",
+        image: "jungle.jpg",
         qualification: 8,
-        create_date: 1967,
+        created: 1967
       }),
       Movie.create({
         title: "Lion King",
-        image: "",
+        image: "reyleon.jpg",
         qualification: 7,
-        create_date: 1994,
+        created: 1994
       }),
 
       Movie.create({
         title: "Chicken Little",
-        image: "",
+        image: "chickenlittle.jpg",
         qualification: 5,
-        create_date: 2005,
+        created: 2005
       }),
 
       // CHARACTERS
       Character.create({
         name: "Baloo",
         age: 9,
-        weight: "350kg",
+        weight: 350,
         history:
           " Es el oso bezudo encargado de transmitir  a los lobatos de Seonee",
-        image: "",
+        image: "baloo.jpg"
       }),
       Character.create({
         name: "Simba",
         age: 3,
-        weight: "200kg",
+        weight: 200,
         history:
           " EL rey de la selva",
-        image: "",
+        image: "simba.jpg"
       }),
       Character.create({
         name: "Buck",
         age: 40,
-        weight: "110kg",
+        weight: 110,
         history: " El papa de Chicken little",
-        image: "",
+        image: "buck.jpg"
       }),
 
       /// GENEROS
       Genre.create({
         name: "Slice-of-Life",
-        image: "",
+        image: "Mostrando imagen"
       }),
 
       Genre.create({
         name: "Superhero",
-        image: "",
+        image: "Mostrando imagen"
       }),
     ]);
   },
 
   async down(queryInterface, Sequelize) {
     return Promise.all([
-      queryInterface.bulkDelete("characters", null, {}),
-      queryInterface.bulkDelete("users", null, {}),
-    ]);
-  },
+      queryInterface.bulkDelete('personajes', null, {}),
+      queryInterface.bulkDelete('usuarios', null, {})
+    ])
+  }
 };

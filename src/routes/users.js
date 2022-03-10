@@ -18,6 +18,6 @@ router.post("/auth/register",AuthControllers.register);
 router.post("/auth/login", AuthControllers.login);
 
 
-router.get("/auth/login",auth ,AuthControllers.login);
+router.get("/auth/login",auth,AuthControllers.login);
 
 module.exports = router;
