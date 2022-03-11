@@ -7,7 +7,7 @@ const CharacterControllers = require("../controllers/charactersControllers");
 
 // Middlewares
 
-const photoMulter = require("../middlewares/multer");
+const fileUpload = require("../middlewares/multerCharacters");
 
 /* Get all the Characters */
 router.get("/characters", CharacterControllers.allCharacters);
@@ -15,12 +15,10 @@ router.get("/characters", CharacterControllers.allCharacters);
 /* Detail a Character */
 router.get("/characters/:id", CharacterControllers.detailCharacter);
 
-/* Search a Character */
 
-/* router.get('/search',CharacterControllers,searchCharacters); */
 
 /* Create a Character */
-router.post("/characters", CharacterControllers.createCharacter);
+router.post("/characters",fileUpload.single('image'),CharacterControllers.createCharacter);
 
 /* Edit Characters  */
 

@@ -51,20 +51,20 @@ module.exports = (sequelize, DataTypes) => {
     deletedAt: "deleted_at",
   };
 
-  const movie = sequelize.define(alias, cols, config);
+  const Movie = sequelize.define(alias, cols, config);
 
-  movie.associate = function (models) {
-    movie.belongsToMany(models.Character, {
-      as: "characters",
+  Movie.associate = function (models) {
+    Movie.belongsToMany(models.Character, {
+   
       through: "Characters_Movies",
-      foreingKey: "movies_id",
+     
     });
 
-    movie.belongsTo(models.Genre, {
-      as: "genres",
+    Movie.belongsTo(models.Genre, {
+    
       through: "Genres_Movies",
-      foreingKey: "genres_id",
+ 
     });
   };
-  return movie;
+  return Movie;
 };

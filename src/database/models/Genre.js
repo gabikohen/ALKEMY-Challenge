@@ -38,14 +38,13 @@ module.exports = (sequelize, DataTypes) => {
     deletedAt: "deleted_at",
   };
 
-  const genre = sequelize.define(alias, cols, config);
+  const Genre = sequelize.define(alias, cols, config);
 
-  genre.associate = function (models) {
-    genre.belongsToMany(models.Movie, {
+  Genre.associate = function (models) {
+    Genre.belongsToMany(models.Movie, {
       through: "Genres_Movies",
-      foreingnKey: "genres_id",
     });
   };
 
-  return genre;
+  return Genre;
 };

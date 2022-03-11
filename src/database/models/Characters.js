@@ -3,7 +3,7 @@ module.exports = (sequelize, DataTypes) => {
 
   let cols = {
     characters_id: {
-      type: DataTypes.INTEGER,
+      type: DataTypes.INTEGER(11),
       autoIncrement: true,
       primaryKey: true,
       allowNull:false,
@@ -56,16 +56,16 @@ module.exports = (sequelize, DataTypes) => {
     deletedAt: "deleted_at",
   };
 
-  const  character = sequelize.define(alias, cols, config);
+  const  Character = sequelize.define(alias, cols, config);
 
-  character.associate = function (models) {
-    character.belongsToMany(models.Movie, {
-      as: "movies",
+  Character.associate = function (models) {
+    Character.belongsToMany(models.Movie, {
+     
       through: "Characters_Movies",
-      foreingKey: "characters_id",
+    
     });
 
    
   };
-  return character;
+  return Character;
 };

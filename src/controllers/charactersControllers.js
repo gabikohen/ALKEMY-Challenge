@@ -4,15 +4,17 @@ const { validationResult } = require("express-validator");
 
 const charactersControllers = {
   allCharacters: (req, res) => {
+    
+    
     db.Character.findAll({
-      where: {
-        attributes: ["image", "name"],
-      },
+    
+        attributes: {
+          include:["image", "name"],
+        } 
+      
     })
       .then((characters) => {
-        return res.status(200).json({
-          data: characters,
-        });
+        return res.status(200).json(characters);
       })
       .catch((error) => console.error(error));
   },
@@ -46,30 +48,33 @@ const charactersControllers = {
   /* Preguntarle guillle */
   updateCharacter: (req, res) => {
     const resultValidation = validationResult(req);
-    db.Character.findByPk(req.params.id).then((personaje) => {
+    let id = (req.params.id);
+    db.Character.findByPk(id).then((personaje) => {
       if (resultValidation.errors.length > 0) {
         return res.status(401).json({
+             //mapped convierte un array en objeto literal
           errors: resultValidation.mapped(),
           oldData: req.body,
         });
       }
       db.Character.update(
         {
-    
+      
           name: req.body.name || personaje.name,
           age: req.body.age ||  personaje.age,
           weight: req.body.weight || personaje.weight,
           history: req.body.history || personaje.history,
           image: req.body.image || personaje.image,
+          // la imagen viene req.body o req.file?
         },
         {
           where: {
-            characarters_id: id,
+            characters_id: id,
           },
         }
       )
         .then(() => {
-          return send.status(200).json("Character has been update");
+          return send.status(200).json("Character has been update" + id);
         })
         .catch((error) => res.send(error));
     });
@@ -85,15 +90,7 @@ const charactersControllers = {
       .catch((error) => console.error(error));
   },
 
-  /* 
-  searchCharacters:(req,res) =>{
-      db.Characters.findAll({
-        where: {
-            : { [Op.like]: '%'},
-          },
-        
-      })
-  } */
+
 };
 
 module.exports = charactersControllers;
