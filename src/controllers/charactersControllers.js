@@ -24,8 +24,7 @@ const charactersControllers = {
       filter.weight = weight;
     }
 
-    // 
-    if(movie){
+    if (movie) {
       filterMovie.title = {
         [Op.like]: `%${movie}%`,
       };
@@ -33,15 +32,14 @@ const charactersControllers = {
 
     db.Character.findAll({
       attributes: ["image", "name"],
-
-      where: filter,
-      include:[{
-        model:db.Movie,
-        where:filterMovie,
-       /*  order:ASC */
-        attributes:[]
-        
-      }]
+     where: filter,
+      include: [
+        {
+          model: db.Movie,
+          where: filterMovie,
+          attributes: [],
+        },
+      ],
     })
       .then((characters) => {
         return res.status(200).json(characters);
@@ -113,7 +111,9 @@ const charactersControllers = {
       where: { characters_id: req.params.id },
     })
       .then(() => {
-        return res.json("Character has been deleted");
+        return res.json({
+          msg: "Chacter has been deleted",
+        });
       })
       .catch((error) => console.error(error));
   },

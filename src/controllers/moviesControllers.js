@@ -1,16 +1,45 @@
 const db = require("../database/models");
 const { validationResult } = require("express-validator");
-
+const Op = db.Sequelize.Op;
 const moviesControllers = {
   allMovies: (req, res) => {
-    
-    
+    const { genre, name, order } = req.query;
+    const filter = {};
+
+    if (name) {
+      filter.title = { [Op.like]: `${name}%` };
+    }
+    // pasa por defecto orden ASC
+    let FilterOr = ["created", "ASC"];
+
+    if (order) {
+      // si existe order lo asigna a orderFilter en mayuscula
+      const ordenarUp = order.toUpperCase();
+      if (ordenarUp === "ASC" || ordenarUp === "DESC") {
+        FilterOr = ["created", order];
+      } else {
+        return res.status(400).send("Use a valid order (ASC/DESC)");
+      }
+    }
+
+    const genreFilters = {};
+    if (genre) {
+      genreFilters.id = {
+        genre,
+      };
+    }
+
     db.Movie.findAll({
-    
-        attributes: 
-          ["image", "name"],
-        
-      
+      attributes: ["image", "title", "created"],
+      where: filter,
+      order: [FilterOr],
+      include: [
+        {
+          model: db.Genre,
+          where: genreFilters,
+          attributes: [],
+        },
+      ],
     })
       .then((characters) => {
         return res.status(200).json(characters);
@@ -51,11 +80,11 @@ const moviesControllers = {
       }
       db.Movie.update(
         {
-          id: req.body.movies_id ||edit.movies_id,
-          title: req.body.title ||edit.title,
-          qualification: req.body.qualification ||edit.qualification,
-          create_date: req.body.create_date ||edit.create_date,
-          image: req.body.image ||edit.image ,
+          id: req.body.movies_id || edit.movies_id,
+          title: req.body.title || edit.title,
+          qualification: req.body.qualification || edit.qualification,
+          create_date: req.body.create_date || edit.create_date,
+          image: req.body.image || edit.image,
         },
         {
           where: {
@@ -65,7 +94,7 @@ const moviesControllers = {
       )
         .then(() => {
           return res.status(200).json({
-            msg:" Movies has been update "
+            msg: " Movies has been update ",
           });
         })
         .catch((error) => res.send(error));
@@ -81,8 +110,6 @@ const moviesControllers = {
       })
       .catch((error) => console.error(error));
   },
-
-
 };
 
 module.exports = moviesControllers;
