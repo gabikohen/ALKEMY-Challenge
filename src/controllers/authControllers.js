@@ -4,42 +4,42 @@ const jwt = require("jsonwebtoken");
 const authConfig = require("../../src/database/config/auth");
 
 const authControllers = {
-     login: (req, res) => {
-      const { password,email } = req.body;
+  login: (req, res) => {
+    const { password, email } = req.body;
 
-      //Buscar el user
+    //Buscar el user
 
-      db.User.findOne({
-        where:{
-          email:email
-        }
-      }).then(user =>{
-       
-        if(!user){
-          res.status(404).json({msg:"Usuario con este correo no encontrado"});
-
-        }else{
+    db.User.findOne({
+      where: {
+        email: email,
+      },
+    })
+      .then((user) => {
+        if (!user) {
+          res
+            .status(404)
+            .json({ msg: "Usuario con este correo no encontrado" });
+        } else {
           // comparo el pass del body con password del user(sobre la consulta)
-          if(bcryptjs.compareSync(password,user.password)){
+          if (bcryptjs.compareSync(password, user.password)) {
             // Devolvemos token // Creo token
-              const token = jwt.sign({ user: user }, authConfig.secret, {
-            expiresIn: authConfig.expires,
-          });
-          res.json({
-            user:user,
-            token:token
-          })
-          }else{
+            const token = jwt.sign({ user: user }, authConfig.secret, {
+              expiresIn: authConfig.expires,
+            });
+            res.json({
+              user: user,
+              token: token,
+            });
+          } else {
             // Acceso no authorizado
-            res.status(401).json({msg:"Contrasena incorrecta"})
+            res.status(401).json({ msg: "Contrasena incorrecta" });
           }
         }
- 
-      }).catch(error => {
-        res.status(500).json(error)
       })
-
-    }, 
+      .catch((error) => {
+        res.status(500).json(error);
+      });
+  },
 
   register: (req, res) => {
     // Encriptando password

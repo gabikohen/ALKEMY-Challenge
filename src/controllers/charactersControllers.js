@@ -1,17 +1,47 @@
 const db = require("../database/models");
-/*  const Op = db.Sequelize.Op; */
+const Op = db.Sequelize.Op;
 const { validationResult } = require("express-validator");
 
 const charactersControllers = {
   allCharacters: (req, res) => {
-    
-    
+    const { name, movie, age, weight } = req.query;
+
+    const filter = {};
+
+    const filterMovie = {};
+
+    if (name) {
+      filter.name = {
+        [Op.like]: `%${name}%`,
+      };
+    }
+
+    if (age) {
+      filter.age = age;
+    }
+
+    if (weight) {
+      filter.weight = weight;
+    }
+
+    // 
+    if(movie){
+      filterMovie.title = {
+        [Op.like]: `%${movie}%`,
+      };
+    }
+
     db.Character.findAll({
-    
-        attributes: {
-          include:["image", "name"],
-        } 
-      
+      attributes: ["image", "name"],
+
+      where: filter,
+      include:[{
+        model:db.Movie,
+        where:filterMovie,
+       /*  order:ASC */
+        attributes:[]
+        
+      }]
     })
       .then((characters) => {
         return res.status(200).json(characters);
@@ -44,28 +74,24 @@ const charactersControllers = {
       .catch((error) => console.error(error));
   },
 
-
-  /* Preguntarle guillle */
   updateCharacter: (req, res) => {
     const resultValidation = validationResult(req);
-    let id = (req.params.id);
+    let id = req.params.id;
     db.Character.findByPk(id).then((personaje) => {
       if (resultValidation.errors.length > 0) {
         return res.status(401).json({
-             //mapped convierte un array en objeto literal
+          //mapped convierte un array en objeto literal
           errors: resultValidation.mapped(),
           oldData: req.body,
         });
       }
       db.Character.update(
         {
-      
           name: req.body.name || personaje.name,
-          age: req.body.age ||  personaje.age,
+          age: req.body.age || personaje.age,
           weight: req.body.weight || personaje.weight,
           history: req.body.history || personaje.history,
           image: req.body.image || personaje.image,
-          // la imagen viene req.body o req.file?
         },
         {
           where: {
@@ -74,7 +100,9 @@ const charactersControllers = {
         }
       )
         .then(() => {
-          return send.status(200).json("Character has been update" + id);
+          return res.status(200).json({
+            msg: "Chacter has been update",
+          });
         })
         .catch((error) => res.send(error));
     });
@@ -89,8 +117,6 @@ const charactersControllers = {
       })
       .catch((error) => console.error(error));
   },
-
-
 };
 
 module.exports = charactersControllers;

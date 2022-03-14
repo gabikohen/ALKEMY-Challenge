@@ -3,13 +3,17 @@ const { validationResult } = require("express-validator");
 
 const moviesControllers = {
   allMovies: (req, res) => {
+    
+    
     db.Movie.findAll({
-      include: {
-        attributes: ["image", "title"],
-      },
+    
+        attributes: 
+          ["image", "name"],
+        
+      
     })
-      .then((todas) => {
-        return res.status(200).json(todas);
+      .then((characters) => {
+        return res.status(200).json(characters);
       })
       .catch((error) => console.error(error));
   },
@@ -47,11 +51,11 @@ const moviesControllers = {
       }
       db.Movie.update(
         {
-          id: req.body.movies_id || edit.movies_id,
-          title: req.body.title || edit.title,
-          qualification: req.body.qualification || edit.qualification,
-          create_date: req.body.create_date || edit.create_date,
-          image: req.body.image || edit.image,
+          id: req.body.movies_id ||edit.movies_id,
+          title: req.body.title ||edit.title,
+          qualification: req.body.qualification ||edit.qualification,
+          create_date: req.body.create_date ||edit.create_date,
+          image: req.body.image ||edit.image ,
         },
         {
           where: {
@@ -60,7 +64,9 @@ const moviesControllers = {
         }
       )
         .then(() => {
-          return send.status(200).json("Character has been update");
+          return res.status(200).json({
+            msg:" Movies has been update "
+          });
         })
         .catch((error) => res.send(error));
     });
@@ -75,6 +81,8 @@ const moviesControllers = {
       })
       .catch((error) => console.error(error));
   },
+
+
 };
 
 module.exports = moviesControllers;
