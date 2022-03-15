@@ -6,6 +6,23 @@ const cookieParser = require('cookie-parser');
 const logger = require('morgan');
 
 
+/// Swagger
+const swaggerUI = require('swagger-ui-express');
+const swaggerJsDoc = require('swagger-jsdoc');
+const swaggerSpec = {
+  definition:{
+    openapi:"3.0.0",
+    info:{
+      title: "Alkemy Challenge APIKEY ",
+      version: "1.0.0",
+    },
+    servers:[{
+      url: "http://localhost:4500"
+    }]
+  },
+  apis:[`${path.join(__dirname,"/src/routes/*.js")}`],
+}
+
 const moviesRouter = require('./src/routes/movies');
  const usersRouter = require('./src/routes/users'); 
 const characterRouter = require('./src/routes/characters')
@@ -21,6 +38,8 @@ app.use(express.json());
 app.use(express.urlencoded({ extended: false }));
 app.use(cookieParser());
 app.use(express.static(path.join(__dirname, 'public')));
+app.use("/api-doc", swaggerUI.serve,swaggerUI.setup(swaggerJsDoc(swaggerSpec)))
+
 
 app.use('/', moviesRouter);
  app.use('/', usersRouter); 
