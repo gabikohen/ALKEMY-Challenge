@@ -1,9 +1,15 @@
+
+  
+require('dotenv').config()
 const sgMail = require('@sendgrid/mail');
 sgMail.setApiKey(process.env.SENDGRID_API_KEY);
 const msg = {
   to: 'test@example.com',
   from: 'gabokohen@gmail.com', // Use the email address or domain you verified above
   subject: 'Confirmando email para ALKEMY',
+  text: "prueba del email",
+  html: `<strong> "Challenge de alkemy" </strong>`,
+
   
 };
 //ES6
@@ -28,3 +34,6 @@ sgMail
     }
   }
 })();
+
+
+module.exports = sgMail;

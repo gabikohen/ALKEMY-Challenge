@@ -2,7 +2,7 @@ const db = require("../database/models");
 const bcryptjs = require("bcryptjs");
 const jwt = require("jsonwebtoken");
 const authConfig = require("../../src/database/config/auth");
-const sendGrid = require("../../services/sendgrid");
+ const sendGrid = require("../../services/sendgrid"); 
 const authControllers = {
   login: (req, res) => {
     const { password, email } = req.body;
@@ -60,7 +60,7 @@ const authControllers = {
           const token = jwt.sign({ user: user }, authConfig.secret, {
             expiresIn: authConfig.expires,
           });
-          sendGrid(user.email),
+           sendGrid(user.email),
             res.status(200).json({
               user: user,
               token: token,

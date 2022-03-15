@@ -24,9 +24,9 @@ const moviesControllers = {
 
     const genreFilters = {};
     if (genre) {
-      genreFilters.id = {
-        genre,
-      };
+      genreFilters.genres_id = 
+        genre
+    
     }
 
     db.Movie.findAll({
