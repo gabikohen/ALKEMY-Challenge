@@ -13,7 +13,7 @@ const moviesControllers = {
     let FilterOr = ["created", "ASC"];
 
     if (order) {
-      // si existe order lo asigna a orderFilter en mayuscula
+      // si existe order lo asigna a FilterOr en mayuscula
       const ordenarUp = order.toUpperCase();
       if (ordenarUp === "ASC" || ordenarUp === "DESC") {
         FilterOr = ["created", order];
@@ -78,9 +78,12 @@ const moviesControllers = {
           oldData: req.body,
         });
       }
+      const peliculaslasId = req.params.id
       db.Movie.update(
+        
+       
         {
-          id: req.body.movies_id || edit.movies_id,
+         
           title: req.body.title || edit.title,
           qualification: req.body.qualification || edit.qualification,
           create_date: req.body.create_date || edit.create_date,
@@ -88,7 +91,7 @@ const moviesControllers = {
         },
         {
           where: {
-            characarters_id: id,
+            movies_id: peliculaslasId,
           },
         }
       )
